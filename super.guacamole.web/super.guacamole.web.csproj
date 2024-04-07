@@ -19,4 +19,9 @@
       <PackageReference Include="Watson" Version="6.1.8" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\super.guacamole.common\super.guacamole.common.csproj" />
+      <ProjectReference Include="..\super.guacamole.image\super.guacamole.image.csproj" />
+    </ItemGroup>
+
 </Project>
