@@ -1,11 +1,11 @@
 namespace super.guacamole.image.Cache;
 
-public interface ICache<TK, TV> where TK : notnull
+public interface IAsyncCache<TK, TV> where TK : notnull
 {
     /**
      * Get the value associated with the given key. If it does not exist, tries to fetch it from the underlying provider.
      */
-    public TV Get(TK key);
+    public Task<TV> Get(TK key);
 
     /**
      * Puts the value associated with the given key into the cache.

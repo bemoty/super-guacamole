@@ -1,36 +1,37 @@
 ﻿using super.guacamole.common;
 using super.guacamole.image;
+using super.guacamole.image.Cache;
 using super.guacamole.web.Routes;
 using WatsonWebserver.Core;
-using WatsonWebserver.Extensions.HostBuilderExtension;
+using HostBuilder = WatsonWebserver.Extensions.HostBuilderExtension.HostBuilder;
 
 namespace super.guacamole.web;
 
 public static class Program
 {
+    private static readonly IAsyncCache<Guid, byte[]> SkinCache =
+        new LruMemoryAsyncCache<Guid, byte[]>(10000, new SkinProvider()); // todo: DI
+
     private static readonly Configuration Configuration = new();
-    
+
     private static readonly Dictionary<string, RouteHandler> Routes = new()
     {
-        {"/test", new TestRoute()}
+        { "/skin/{uuid}", new SkinUuidRoute(SkinCache) },
+        { "/avatar/{uuid}", new AvatarUuidRoute(SkinCache) }
     };
-    
+
     public static void Main(string[] args)
     {
         var hostname = Configuration.Hostname;
         var port = Configuration.Port;
-        var builder = new HostBuilder(hostname, port, false, DefaultRoute);
-        
+        var hostBuilder = new HostBuilder(hostname, port, false, DefaultRoute);
+
         foreach (var (path, handler) in Routes)
         {
-            handler.Register(builder, path);
+            handler.Register(hostBuilder, path);
         }
-        
-        SkinProvider skinProvider = new();
-        var texture = skinProvider.Provide(Guid.Parse("951b54fc-6189-4fbd-8b9c-affd70ab8449"));
-        Console.WriteLine(texture);
 
-        var server = builder.Build();
+        var server = hostBuilder.Build();
         server.Start();
         Console.WriteLine($"Listening on {hostname}:{port}");
         Console.ReadLine();

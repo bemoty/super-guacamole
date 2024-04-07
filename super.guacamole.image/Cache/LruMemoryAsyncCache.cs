@@ -1,11 +1,12 @@
 namespace super.guacamole.image.Cache;
 
-public class LruMemoryCache<TK, TV>(int capacity, IProvider<TK, TV> provider) : ICache<TK, TV> where TK : notnull
+public class LruMemoryAsyncCache<TK, TV>(int capacity, IProvider<TK, TV> provider)
+    : IAsyncCache<TK, TV> where TK : notnull
 {
     private readonly Dictionary<TK, LinkedListNode<LruCacheItem<TK, TV>>> _cacheMap = new();
     private readonly LinkedList<LruCacheItem<TK, TV>> _lruList = [];
 
-    public TV Get(TK key)
+    public async Task<TV> Get(TK key)
     {
         if (_cacheMap.TryGetValue(key, out var node))
         {
@@ -15,7 +16,7 @@ public class LruMemoryCache<TK, TV>(int capacity, IProvider<TK, TV> provider) : 
             return value;
         }
 
-        var providedValue = provider.Provide(key);
+        var providedValue = await provider.Provide(key);
         Put(key, providedValue);
         return providedValue;
     }
@@ -43,7 +44,6 @@ public class LruMemoryCache<TK, TV>(int capacity, IProvider<TK, TV> provider) : 
         _lruList.Remove(node);
         _cacheMap.Remove(key);
         return true;
-
     }
 
     private void RemoveFirst()
