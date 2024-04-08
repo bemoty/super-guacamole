@@ -1,5 +1,6 @@
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Png;
+using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Transforms;
 using super.guacamole.image.Cache;
@@ -59,8 +60,8 @@ public class AvatarUuidRoute(IAsyncCache<Guid, byte[]> skinCache) : RouteHandler
                 }
 
                 using var outputStream = new MemoryStream();
-                await head.SaveAsync(outputStream, new PngEncoder());
-                ctx.Response.Headers["Content-Type"] = "image/png";
+                await head.SaveAsync(outputStream, new WebpEncoder());
+                ctx.Response.Headers["Content-Type"] = "image/webp";
                 await ctx.Response.Send(outputStream.ToArray());
             }
             catch (FormatException)
