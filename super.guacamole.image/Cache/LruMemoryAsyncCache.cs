@@ -1,6 +1,6 @@
-namespace super.guacamole.image.Cache;
+namespace Super.Guacamole.Image.Cache;
 
-public class LruMemoryAsyncCache<TK, TV>(int capacity, IProvider<TK, TV> provider)
+public class LruMemoryAsyncCache<TK, TV>(IProvider<TK, TV> provider, int capacity = 100000)
     : IAsyncCache<TK, TV> where TK : notnull
 {
     private readonly Dictionary<TK, LinkedListNode<LruCacheItem<TK, TV>>> _cacheMap = new();

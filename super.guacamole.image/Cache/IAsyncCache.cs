@@ -1,4 +1,4 @@
-namespace super.guacamole.image.Cache;
+namespace Super.Guacamole.Image.Cache;
 
 public interface IAsyncCache<TK, TV> where TK : notnull
 {

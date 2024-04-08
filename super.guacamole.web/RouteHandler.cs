@@ -2,7 +2,7 @@ using WatsonWebserver.Core;
 using WatsonWebserver.Extensions.HostBuilderExtension;
 using HttpMethod = WatsonWebserver.Core.HttpMethod;
 
-namespace super.guacamole.web;
+namespace Super.Guacamole.Web;
 
 public abstract class RouteHandler
 {

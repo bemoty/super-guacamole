@@ -1,10 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "super.guacamole.web", "super.guacamole.web\super.guacamole.web.csproj", "{AE417EF3-64B8-4FA9-A758-E9C1BFD9FF85}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Super.Guacamole.Web", "Super.Guacamole.Web\Super.Guacamole.Web.csproj", "{AE417EF3-64B8-4FA9-A758-E9C1BFD9FF85}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "super.guacamole.common", "super.guacamole.common\super.guacamole.common.csproj", "{B660C879-9F16-4866-84E4-5CE8DCB8F6E7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Super.Guacamole.Common", "Super.Guacamole.Common\Super.Guacamole.Common.csproj", "{B660C879-9F16-4866-84E4-5CE8DCB8F6E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "super.guacamole.image", "super.guacamole.image\super.guacamole.image.csproj", "{5D5A687B-456A-4B74-A528-B01438DD3B90}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Super.Guacamole.Image", "Super.Guacamole.Image\Super.Guacamole.Image.csproj", "{5D5A687B-456A-4B74-A528-B01438DD3B90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

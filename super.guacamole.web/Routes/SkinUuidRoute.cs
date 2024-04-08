@@ -1,9 +1,9 @@
-using super.guacamole.image.Cache;
+using Super.Guacamole.Image.Cache;
 using WatsonWebserver.Core;
 using WatsonWebserver.Extensions.HostBuilderExtension;
 using HttpMethod = WatsonWebserver.Core.HttpMethod;
 
-namespace super.guacamole.web.Routes;
+namespace Super.Guacamole.Web.Routes;
 
 public class SkinUuidRoute(IAsyncCache<Guid, byte[]> skinCache) : RouteHandler
 {

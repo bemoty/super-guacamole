@@ -1,11 +1,14 @@
 using System.Text;
 using System.Text.Json;
-using super.guacamole.image.Model;
+using NLog;
+using Super.Guacamole.Image.Model;
 
-namespace super.guacamole.image;
+namespace Super.Guacamole.Image;
 
 public class SkinProvider : IProvider<Guid, byte[]>
 {
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
     private readonly List<string> _defaultSkins =
     [
         "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAV1BMVEUAAAD////8uWH5p4b7qFf3mUzxk27yjkXxgW7lf2HbeinbcFB8fHyjRyNcXFydRSKTPx4faHgaYG+HNxhFR0gVWGaAMBINTlwJRVIzNTYmKClEHA0kAwPF9A5PAAAAAXRSTlMAQObYZgAAArJJREFUeNrtluFSozAUhbEJNybokjUSKPr+z7nnXIittA7Zdhz/+AHhduz5uEkdoCmk2MfU90npuq75X3oKUlzytwgiro4jMn6TgFcv+bs66G4V6CJiv0MQ0UJCBx7cIuijzgF5Ui9IKcWMS+c+Ro8zy6hDzjnlVNE6Nzq8iOc5roJUJ8gI5B4hMUBQ9Lk0hbFCkHpjenzZKFE/M8rGINkVYPLGo/308G7M+0MSfDB5mQMNuwJ8Rwz2x0cDMEoyktelgGVfwIuJCNLeYxDgs/ee6Vj5K+TceTGK+O6DBHJTwwSOx3k+rUtyzlo7rjQrrbWBPV4VzPPxeJpWTtk7N07Kh8BSIF232wFXr7smONR2YMV7uTqFyw7GFb0U9qBQcDiwsm3rXBtCizTq4EBA1RSGFYZ5tCCEgyBvGWXM4cpLHucQHOtPghcwTNMwAoQoAFYFGtTdau0oaLeCvxCM48BjEVjwWcAzSxVcTAF5hkkRaJy0CKMuUEC2a7ARtC0jRUHChi8FjoQlpGkLUErBeyFNYRy4cViAXNNlvjTAFMQADDAIi6aAH39UUJD0zO356emZBWslUUAEfBIcweuf19fjigu6StMUlLJyDqGSp+EkmJk65WenMcxoUlVhFXAFuJ0LNgSi/xJTOMcsMF46+JpU8acfE8TvFyRy8bVcnKnqThsvW8incwU5NvcR852Ct7dv6MAqemvBYO3OIjS//Djbhy3vq1LuQre8cFjQdWJu7sAerL2rA06BHVSHxwJKB9bnjI67AoaGFdZ8H2CYBh67Ar4nvAAVAEeBGki7L0BqeV8ArClgeJXUCQbkCxScUyU4J2wo9wMFxa5AvJdzajqgYuRGxC+Pcx6k4mfEBngmAkpYagTb9wUha5imfQFZ8vNMgRfvTz34XcG8gQKGlSsd/AMLulgNFVXqIAAAAABJRU5ErkJggg==", // Ari
@@ -58,7 +61,7 @@ public class SkinProvider : IProvider<Guid, byte[]>
         }
         catch (Exception e)
         {
-            // _logger.Error(e, "Failed to provide texture for '{key}'", key); // todo: better logging
+            _logger.Error(e, "Failed to provide texture for '{key}'", key);
             return Fallback();
         }
     }

@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <TargetFramework>net8.0</TargetFramework>
-        <RootNamespace>super.guacamole.web</RootNamespace>
+        <RootNamespace>Super.Guacamole.Web</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
@@ -16,12 +16,16 @@
     </ItemGroup>
 
     <ItemGroup>
+        <None Update="nlog.config" CopyToOutputDirectory="Always" />
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Watson" Version="6.1.8" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\super.guacamole.common\super.guacamole.common.csproj" />
-      <ProjectReference Include="..\super.guacamole.image\super.guacamole.image.csproj" />
+      <ProjectReference Include="..\Super.Guacamole.Common\Super.Guacamole.Common.csproj" />
+      <ProjectReference Include="..\Super.Guacamole.Image\Super.Guacamole.Image.csproj" />
     </ItemGroup>
 
 </Project>

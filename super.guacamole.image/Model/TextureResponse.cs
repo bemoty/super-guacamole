@@ -1,6 +1,6 @@
 // ReSharper disable InconsistentNaming
 
-namespace super.guacamole.image.Model;
+namespace Super.Guacamole.Image.Model;
 
 public class TextureResponse
 {

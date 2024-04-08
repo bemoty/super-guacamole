@@ -1,4 +1,4 @@
-namespace super.guacamole.image;
+namespace Super.Guacamole.Image;
 
 public interface IProvider<TK, TV>
 {

@@ -1,14 +1,13 @@
 using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Png;
 using SixLabors.ImageSharp.Formats.Webp;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp.Processing.Processors.Transforms;
-using super.guacamole.image.Cache;
+using Super.Guacamole.Image.Cache;
 using WatsonWebserver.Core;
 using WatsonWebserver.Extensions.HostBuilderExtension;
 using HttpMethod = WatsonWebserver.Core.HttpMethod;
 
-namespace super.guacamole.web.Routes;
+namespace Super.Guacamole.Web.Routes;
 
 public class AvatarUuidRoute(IAsyncCache<Guid, byte[]> skinCache) : RouteHandler
 {
@@ -29,7 +28,7 @@ public class AvatarUuidRoute(IAsyncCache<Guid, byte[]> skinCache) : RouteHandler
                 var guid = Guid.Parse(uuid);
                 var texture = await skinCache.Get(guid);
 
-                using var image = await Image.LoadAsync(new MemoryStream(texture));
+                using var image = await SixLabors.ImageSharp.Image.LoadAsync(new MemoryStream(texture));
                 using var head = image.Clone(i => i.Crop(new Rectangle(8, 8, 8, 8)));
 
                 // Add helm according to query

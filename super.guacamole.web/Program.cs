@@ -1,42 +1,34 @@
-﻿using super.guacamole.common;
-using super.guacamole.image;
-using super.guacamole.image.Cache;
-using super.guacamole.web.Routes;
-using WatsonWebserver.Core;
-using HostBuilder = WatsonWebserver.Extensions.HostBuilderExtension.HostBuilder;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using NLog.Extensions.Logging;
+using Super.Guacamole.Image;
+using Super.Guacamole.Image.Cache;
 
-namespace super.guacamole.web;
+namespace Super.Guacamole.Web;
 
 public static class Program
 {
-    private static readonly IAsyncCache<Guid, byte[]> SkinCache =
-        new LruMemoryAsyncCache<Guid, byte[]>(10000, new SkinProvider()); // todo: DI
-
-    private static readonly Configuration Configuration = new();
-
-    private static readonly Dictionary<string, RouteHandler> Routes = new()
+    public static void Main()
     {
-        { "/skin/{uuid}", new SkinUuidRoute(SkinCache) },
-        { "/avatar/{uuid}", new AvatarUuidRoute(SkinCache) }
-    };
-
-    public static void Main(string[] args)
-    {
-        var hostname = Configuration.Hostname;
-        var port = Configuration.Port;
-        var hostBuilder = new HostBuilder(hostname, port, false, DefaultRoute);
-
-        foreach (var (path, handler) in Routes)
+        var config = new ConfigurationBuilder()
+                     .SetBasePath(Directory.GetCurrentDirectory())
+                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                     .Build();
+        
+        ServiceCollection services = new ServiceCollection();
+        services.AddLogging(builder =>
         {
-            handler.Register(hostBuilder, path);
-        }
+            builder.ClearProviders();
+            builder.SetMinimumLevel(LogLevel.Trace);
+            builder.AddNLog(config);
+        });
+        services.AddSingleton<IProvider<Guid, byte[]>, SkinProvider>();
+        services.AddSingleton<IAsyncCache<Guid, byte[]>, LruMemoryAsyncCache<Guid, byte[]>>();
+        services.AddSingleton<IApplication, Application>();
 
-        var server = hostBuilder.Build();
-        server.Start();
-        Console.WriteLine($"Listening on {hostname}:{port}");
-        Console.ReadLine();
+        using var provider = services.BuildServiceProvider();
+        var app = provider.GetRequiredService<IApplication>();
+        app.Run();
     }
-
-    private static async Task DefaultRoute(HttpContextBase ctx) =>
-        await ctx.Response.Send("Hello from the default route!");
 }
