@@ -34,10 +34,7 @@ public abstract class RouteHandler
     {
         foreach (var value in Enum.GetValues(typeof(HttpMethod)).Cast<HttpMethod>())
         {
-            if (value is HttpMethod.GET or HttpMethod.POST)
-            {
-                continue;
-            }
+            if (value is HttpMethod.GET or HttpMethod.POST) continue;
 
             hostBuilder.MapStaticRoute(value, path, Fallback);
         }
@@ -54,13 +51,9 @@ public abstract class RouteHandler
         {
             var keyValue = parameter.Split('=');
             if (keyValue.Length < 2)
-            {
                 queryParameters[keyValue[0]] = "";
-            }
             else
-            {
                 queryParameters[keyValue[0]] = keyValue[1];
-            }
         }
 
         return queryParameters;

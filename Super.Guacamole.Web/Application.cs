@@ -23,10 +23,7 @@ public class Application(IAsyncCache<Guid, byte[]> skinCache) : IApplication
         var port = Configuration.Port;
         var hostBuilder = new HostBuilder(hostname, port, false, DefaultRoute);
 
-        foreach (var (path, handler) in _routes)
-        {
-            handler.Register(hostBuilder, path);
-        }
+        foreach (var (path, handler) in _routes) handler.Register(hostBuilder, path);
 
         var server = hostBuilder.Build();
         server.Start();
@@ -41,7 +38,7 @@ public class Application(IAsyncCache<Guid, byte[]> skinCache) : IApplication
     }
 }
 
-interface IApplication
+internal interface IApplication
 {
     public void Run();
 }

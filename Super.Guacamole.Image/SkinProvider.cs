@@ -7,8 +7,6 @@ namespace Super.Guacamole.Image;
 
 public class SkinProvider : IProvider<Guid, byte[]>
 {
-    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
-
     private readonly List<string> _defaultSkins =
     [
         "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAV1BMVEUAAAD////8uWH5p4b7qFf3mUzxk27yjkXxgW7lf2HbeinbcFB8fHyjRyNcXFydRSKTPx4faHgaYG+HNxhFR0gVWGaAMBINTlwJRVIzNTYmKClEHA0kAwPF9A5PAAAAAXRSTlMAQObYZgAAArJJREFUeNrtluFSozAUhbEJNybokjUSKPr+z7nnXIittA7Zdhz/+AHhduz5uEkdoCmk2MfU90npuq75X3oKUlzytwgiro4jMn6TgFcv+bs66G4V6CJiv0MQ0UJCBx7cIuijzgF5Ui9IKcWMS+c+Ro8zy6hDzjnlVNE6Nzq8iOc5roJUJ8gI5B4hMUBQ9Lk0hbFCkHpjenzZKFE/M8rGINkVYPLGo/308G7M+0MSfDB5mQMNuwJ8Rwz2x0cDMEoyktelgGVfwIuJCNLeYxDgs/ee6Vj5K+TceTGK+O6DBHJTwwSOx3k+rUtyzlo7rjQrrbWBPV4VzPPxeJpWTtk7N07Kh8BSIF232wFXr7smONR2YMV7uTqFyw7GFb0U9qBQcDiwsm3rXBtCizTq4EBA1RSGFYZ5tCCEgyBvGWXM4cpLHucQHOtPghcwTNMwAoQoAFYFGtTdau0oaLeCvxCM48BjEVjwWcAzSxVcTAF5hkkRaJy0CKMuUEC2a7ARtC0jRUHChi8FjoQlpGkLUErBeyFNYRy4cViAXNNlvjTAFMQADDAIi6aAH39UUJD0zO356emZBWslUUAEfBIcweuf19fjigu6StMUlLJyDqGSp+EkmJk65WenMcxoUlVhFXAFuJ0LNgSi/xJTOMcsMF46+JpU8acfE8TvFyRy8bVcnKnqThsvW8incwU5NvcR852Ct7dv6MAqemvBYO3OIjS//Djbhy3vq1LuQre8cFjQdWJu7sAerL2rA06BHVSHxwJKB9bnjI67AoaGFdZ8H2CYBh67Ar4nvAAVAEeBGki7L0BqeV8ArClgeJXUCQbkCxScUyU4J2wo9wMFxa5AvJdzajqgYuRGxC+Pcx6k4mfEBngmAkpYagTb9wUha5imfQFZ8vNMgRfvTz34XcG8gQKGlSsd/AMLulgNFVXqIAAAAABJRU5ErkJggg==", // Ari
@@ -19,6 +17,24 @@ public class SkinProvider : IProvider<Guid, byte[]>
         "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAdVBMVEUAAADTy8bgxbzJsannqjm1n5jgnyfblRHTkRbJiA2+gA20egyichiuU1CUZQuaSkeaSUeGQD5aRTR0NTNOPC1ENSg7NzQ6LSI4KBs4JxstKCUwIhgyGR4rHhUqHg8uGAAmEhYgFwseDhEaEQofCg4QCgYWBQn8zoeeAAAAAXRSTlMAQObYZgAAA2lJREFUeNrtltF2ojAQhtmWQhgiFTFrbGMaKe77P+L+MxEPGz0Fujd7sX+EMDnMl0nUyWSj3BCCG5wLYZBPtlYuEsK3AUNwrg+MGaAwrAawLy64f0LDekB0793gGeDXA9ibl2A9CN7bb+1BcCFY6yFrv7WEwBGIVgB6F/BxfRgcblcDH6GhnwWIF9zw8mCMY4pgMCCYeQATfrG/DYOxwcFg/54bHmYBmM7yTNawQICBW1ixBHc4423z48OYjx8GfucDBhFDv2wJwR0OztmdEe2sYztIA2zJEvrzJYBgzPu7MfAPl3PvZCP5WrKE/nI+e28NZL0/ny8cu3ijZUvUbrfbZ2i0T6dP6KQx3HW4jeMlNWa/Xww4Nhhu2wlA5Q1ifAxoHwD0drPZ4roBqOAIlgKOxyYF5OWDCNqubRnQ4mGDlxvWCToetdK6aq5SpKuSXA+5khIAz8KALdSI4H7KSTcNjYCqVqTyXqTyFABNAVCRwx8AXFEIoKaih3RDxX0ErQDwGB2Ip6MaAIoDGgHovCRmok8AGwA6NJaGEDfeLbSoUBIHAlCFyhlAhUoB2GsBYCWVJqUJbjkRbxyTFG4NYwgkieqLPSBVY72xNbWK3jx1patKUcW9qu4BbdfdNpGD4Cbf4Q1GDVFFhB7dBNBBLTT2Gu5lJyKCoSg2I9pbCP0E8JYIMwhJmDBKik3c4Q/t91PAy8vPq15enqEOGv9EnSiyYrbx3nprd1PAM+vpKXbQ7ZfJF4zx/2CNFYLxBslrLkvFUy5LVVJYeNhAj5KRyt1SwONxKv4SkJdhgXMavRz7wSX5YG79bjIglY9L8sGXgORIjCk+yQczq3CJHfosyQczAiFVkg/Wq6mrJB/8M3ptX1830CseuM/+S7RNDtuCyj/SGJX5OkCZK28ngFwVMxVLAlAFSQSTiNYBELJEMIkodXlcLyCZbviUwYycDmRitgEc7VT39QKpusL7nA5kYraxB6Od6v6srLUmKojk30hZxjamHu1HADREMKkXal3mnA7k22MbU4/2YwCvnQEsOGiEzBOiE4DG1KM9UVIvCAAriQlgLA8AiCf2NT0s2INYEMgdXTYvKRQmgFgQyB3dgnyQ1gsW2ptR2bzeEo0VAcRl7rzSesF6Lgp2AtjZBYC0XjDeiH+sD+7f/w0kuYUGQiisiwAAAABJRU5ErkJggg==", // Makena
         "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAMAAACdt4HsAAAAYFBMVEUAAAD////NeVu5Z0qnXEOpVjqRRzEldFG5MRyCOiSnKRVzOyceWj+WIhBjNiBZNCBYLB0VSDF4FgZKJhREJRVkEgUPNSQ4HhEuGA4wFQgVGyEmFg0oEQYjEgoQFBkGCAq2w9khAAAAAXRSTlMAQObYZgAAAo5JREFUeNrtluli6iAQRqkgmjS0FYngFt//Le98LGZBxZi/9xBC2mZORrBkWMJZZ6xx1rrQ2FxC3DKB8ZGuItyHArNAgHBLfYHA/lIzTkIgPxcISQYpxUcCfAwRmbd84fiNKxgHY6m5d5fvagVHs9e0nmEsC+g2HFLwFSeEtMbN+kZS8GplJOfrdejSrFbW53B9UyC4pL7++uP872vNhZHUKRztHQGyt7xHWHyOa2qsxNVKKQDn398UDiQJHDU6vyOoAFnCHMoKBAEae4dd0+yOl+OFRTABdLhm42lYpFZKIclcQFzIMBA4B4E3NGOBqKpHgnEG+JekUxOZn4EQmNlcUD/IoBlC+bZACkK2Q2qPjtQ1S6TABP21bfVNyg6j1kVBiI+G3S4Kuu40Q7DxIJ5QSrWtovgbRqWiQddA6YBSveCAqBB7ALrVXnCCAD/Qga4CSaB6wYSQwa3rOoweH60nvBRoEpw6BIKt0ts5AoAMbiqw3WrqzwViQkgaC6tHAjFhKOAeEdCgPRyaQ5smzHfe3+UjWGIPfn72ifTF2lAfEuOlFGgDwRHs98dEEqDHawABQHifwWywyS7CmcUCy5ZhTfkhRLzLOCJtrymFM+EKefQCOqXCJc3imbGzdTMEiLbGjASOzRAw52ERy4og5D5m5L/aTCgIQFnw6HFbUG9rD12wRDOBPUFNYP8p1gvhZdtPYI1dpLgt5K/7XlBVoheYsuBlBtbMzqAeZZBtK6/qBe2pI1qfiT6BbDKyeiETjPeDbGvJ6oWCgPVXz+oF7VG1Ryld2hTyegGoOzp77GbCYcLDt/ISQdoPPHTBmgklAXi5L4gCrEBWL3j4nZIgrxfwPpd3g5CsQFYvQPAqg3+nKHCSbVy27AAAAABJRU5ErkJggg==" // Noor
     ];
+
+    private readonly Logger _logger = LogManager.GetCurrentClassLogger();
+
+    public async Task<byte[]> Provide(Guid key)
+    {
+        try
+        {
+            var textureUrl = await GetTextureUrl(key);
+            if (textureUrl == null) return Fallback();
+            var textureData = await GetTextureFromUrl(textureUrl.textures["SKIN"].url);
+            return textureData;
+        }
+        catch (Exception e)
+        {
+            _logger.Error(e, "Failed to provide texture for '{key}'", key);
+            return Fallback();
+        }
+    }
 
     private byte[] Fallback()
     {
@@ -48,21 +64,5 @@ public class SkinProvider : IProvider<Guid, byte[]>
     {
         var client = new HttpClient();
         return client.GetByteArrayAsync(url);
-    }
-
-    public async Task<byte[]> Provide(Guid key)
-    {
-        try
-        {
-            var textureUrl = await GetTextureUrl(key);
-            if (textureUrl == null) return Fallback();
-            var textureData = await GetTextureFromUrl(textureUrl.textures["SKIN"].url);
-            return textureData;
-        }
-        catch (Exception e)
-        {
-            _logger.Error(e, "Failed to provide texture for '{key}'", key);
-            return Fallback();
-        }
     }
 }

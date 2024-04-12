@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Configuration;
 using NLog.Extensions.Logging;
 using Super.Guacamole.Image;
 using Super.Guacamole.Image.Cache;
@@ -12,11 +12,11 @@ public static class Program
     public static void Main()
     {
         var config = new ConfigurationBuilder()
-                     .SetBasePath(Directory.GetCurrentDirectory())
-                     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                     .Build();
-        
-        ServiceCollection services = new ServiceCollection();
+            .SetBasePath(Directory.GetCurrentDirectory())
+            .AddJsonFile("appsettings.json", true, true)
+            .Build();
+
+        ServiceCollection services = [];
         services.AddLogging(builder =>
         {
             builder.ClearProviders();

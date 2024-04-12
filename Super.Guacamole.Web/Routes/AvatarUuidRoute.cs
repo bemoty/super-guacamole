@@ -5,6 +5,7 @@ using SixLabors.ImageSharp.Processing.Processors.Transforms;
 using Super.Guacamole.Image.Cache;
 using WatsonWebserver.Core;
 using WatsonWebserver.Extensions.HostBuilderExtension;
+using Configuration = Super.Guacamole.Common.Configuration;
 using HttpMethod = WatsonWebserver.Core.HttpMethod;
 
 namespace Super.Guacamole.Web.Routes;
@@ -44,7 +45,6 @@ public class AvatarUuidRoute(IAsyncCache<Guid, byte[]> skinCache) : RouteHandler
 
                 // Resize the head according to query
                 if (queryParameters.TryGetValue("size", out var rawSize))
-                {
                     try
                     {
                         var size = int.Parse(rawSize);
@@ -56,11 +56,11 @@ public class AvatarUuidRoute(IAsyncCache<Guid, byte[]> skinCache) : RouteHandler
                         await ctx.Response.Send("Invalid size format");
                         return;
                     }
-                }
 
                 using var outputStream = new MemoryStream();
                 await head.SaveAsync(outputStream, new WebpEncoder());
                 ctx.Response.Headers["Content-Type"] = "image/webp";
+                ctx.Response.Headers["Cache-Control"] = $"public, max-age={Configuration.CacheTimeSeconds}";
                 await ctx.Response.Send(outputStream.ToArray());
             }
             catch (FormatException)

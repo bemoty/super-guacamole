@@ -10,22 +10,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="nlog.config" CopyToOutputDirectory="Always" />
+        <None Update="nlog.config" CopyToOutputDirectory="Always"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Watson" Version="6.1.8" />
+        <PackageReference Include="Watson" Version="6.1.8"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Super.Guacamole.Common\Super.Guacamole.Common.csproj" />
-      <ProjectReference Include="..\Super.Guacamole.Image\Super.Guacamole.Image.csproj" />
+        <ProjectReference Include="..\Super.Guacamole.Common\Super.Guacamole.Common.csproj"/>
+        <ProjectReference Include="..\Super.Guacamole.Image\Super.Guacamole.Image.csproj"/>
     </ItemGroup>
 
 </Project>

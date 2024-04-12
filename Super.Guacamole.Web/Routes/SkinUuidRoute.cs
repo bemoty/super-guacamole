@@ -1,3 +1,4 @@
+using Super.Guacamole.Common;
 using Super.Guacamole.Image.Cache;
 using WatsonWebserver.Core;
 using WatsonWebserver.Extensions.HostBuilderExtension;
@@ -22,6 +23,7 @@ public class SkinUuidRoute(IAsyncCache<Guid, byte[]> skinCache) : RouteHandler
                 var guid = Guid.Parse(uuid);
                 var texture = await skinCache.Get(guid);
                 ctx.Response.Headers["Content-Type"] = "image/png";
+                ctx.Response.Headers["Cache-Control"] = $"public, max-age={Configuration.CacheTimeSeconds}";
                 await ctx.Response.Send(texture);
             }
             catch (FormatException)

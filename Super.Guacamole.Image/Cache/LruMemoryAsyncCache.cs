@@ -24,16 +24,11 @@ public class LruMemoryAsyncCache<TK, TV>(IProvider<TK, TV> provider, int capacit
     public void Put(TK key, TV value)
     {
         if (_cacheMap.TryGetValue(key, out var existingNode))
-        {
             _lruList.Remove(existingNode);
-        }
-        else if (_cacheMap.Count >= capacity)
-        {
-            RemoveFirst();
-        }
+        else if (_cacheMap.Count >= capacity) RemoveFirst();
 
-        LruCacheItem<TK, TV> cacheItem = new LruCacheItem<TK, TV>(key, value);
-        LinkedListNode<LruCacheItem<TK, TV>> node = new LinkedListNode<LruCacheItem<TK, TV>>(cacheItem);
+        var cacheItem = new LruCacheItem<TK, TV>(key, value);
+        var node = new LinkedListNode<LruCacheItem<TK, TV>>(cacheItem);
         _lruList.AddLast(node);
         _cacheMap[key] = node;
     }
