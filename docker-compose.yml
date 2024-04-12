@@ -1,0 +1,8 @@
+services:
+  super.guacamole.web:
+    image: super.guacamole.web
+    build:
+      context: .
+      dockerfile: Super.Guacamole.Web/Dockerfile
+    ports:
+      - '3001:3001'
